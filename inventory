@@ -1,0 +1,12 @@
+[dev]
+node1
+
+[proxy]
+node1
+
+[webserver]
+node2
+
+[dmz:children]
+webserver
+
