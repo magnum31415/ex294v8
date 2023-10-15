@@ -1,3 +1,7 @@
 yum install epel-release
 yum install ansible
 
+#From user who runs ansible playbooks
+#
+ssh-copy-id remoteuser@managedserver
+
