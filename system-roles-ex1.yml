@@ -1,0 +1,17 @@
+---
+- name: system role tymesync
+  hosts: all
+  become: true
+  vars:
+    timesync_ntp_servers:
+      - hostname: 172.25.4.1
+        iburst: true
+  roles:
+    - rhel-system-roles.timesync
+
+#
+#yum search rhel-system-roles
+#ansible-galaxy role list
+#ls -la /usr/share/ansible/roles/linux-system-roles.timesync/README.md
+#
+#

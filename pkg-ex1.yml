@@ -1,0 +1,19 @@
+---
+- name: install pkgs
+  hosts: all
+  become: True
+  tasks:
+    - name: pkgs on proxy
+      yum:
+        name:
+          - php
+        state: latest
+      when: inventory_hostname in groups['proxy']
+    - name: pkgs on webserver
+      yum:
+        name:
+          - nginx
+        state: latest
+      when: inventory_hostname in groups['webserver']
+
+
