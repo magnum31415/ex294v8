@@ -1,0 +1,8 @@
+---
+# vars file for apache
+web_svc : httpd
+fw_svc : firewalld
+web_pkg : httpd
+fw_pkg : firewalld
+web_root : /var/www/html
+

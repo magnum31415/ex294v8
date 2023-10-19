@@ -1,0 +1,24 @@
+---
+- name: Custom apache role
+  hosts: all
+  become: true
+  roles:
+    - apache
+- name: test webservers
+  become: false
+  hosts: localhost
+  tasks:
+  - name: connect web server
+    uri:
+      url: http://{{item}}
+      return_content: yes
+      status_code: 200
+    loop:
+      - node1
+      - node2 
+    register: response
+
+  - name: debug
+    debug:
+      msg: "---{{item}}---"
+    loop: "{{response.results}}"
