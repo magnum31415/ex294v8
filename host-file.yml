@@ -1,0 +1,10 @@
+---
+- name: host file
+  hosts: all
+  become: true
+  tasks:
+    - name: template /etc/ansiblehosts
+      template:
+        src: host-file.j2
+        dest: /etc/ansiblehosts
+      when: ( 'proxy' in group_names )
