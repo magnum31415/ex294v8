@@ -1,0 +1,32 @@
+---
+- name: Apache & files
+  hosts: all
+  become: true
+  tasks:
+  - name: create group
+    group:
+      name: webdev
+      state: present
+      gid: 1002
+  - name: create dir
+    file:
+      path: /webdev
+      group: webdev
+      state: directory
+      #setype: httpd_sys_content_t 
+      mode: u=rwx,g=rwx,o=rx,g+s
+  - name: symlink
+    file:
+      src: /webdev
+      dest: /var/www/html/webdev
+      state: link
+  - name: index.html
+    copy:
+      content: 'Development'
+      dest: /webdev/index.html    
+      group: webdev
+  - name: sefcontext
+    sefcontext:
+      target: '/webdev/.*?'
+      setype: httpd_sys_content_t
+      state: present    
