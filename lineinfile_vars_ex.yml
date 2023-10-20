@@ -1,0 +1,34 @@
+---
+- name: system report
+  hosts: all
+  become: true
+  tasks:
+    - name: get template
+      get_url:
+        url: http://node2/system-report
+        dest: /root/system-report
+    - name: hostname
+      lineinfile:
+        path: /root/system-report
+        regexp: "^HOST="
+        line: "HOST={{inventory_hostname|default('NONE', true)}}"
+    - name: memtotal
+      lineinfile:
+        path: /root/system-report
+        regexp: " MEMORY="
+        line: " MEMORY={{ansible_memtotal_mb|default('NONE', true)}}"
+    - name: bios
+      lineinfile:
+        path: /root/system-report
+        regexp: " BIOS="
+        line: " BIOS={{ansible_bios_version|default('NONE', true)}}"
+    - name: storage
+      lineinfile:
+        path: /root/system-report
+        regexp: " STORAGE_SIZE_VDA="
+        line: " STORAGE_SIZE_VDA={{ansible_devices.sda.size|default('NONE', true)}}"
+    - name: storage2
+      lineinfile:
+        path: /root/system-report
+        regexp: " STORAGE_SIZE_VDB="
+        line: " STORAGE_SIZE_VDB={{ansible_devices.vdb.size|default('NONE', true)}}"
