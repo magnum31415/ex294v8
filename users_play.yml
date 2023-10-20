@@ -1,0 +1,62 @@
+---
+- name: create users
+  hosts: all
+  become: true
+  #ansible-vault encrypt users_list_password.yml --vault-password-file=users_list_password_vault.txt
+  vars_files:
+    - users_list.yml
+    - users_list_password.yml
+  tasks:
+    - name: create users in web servers
+      user:
+        name: "{{item.username}}"
+        state: present
+        shell: /bin/bash
+        password: "{{ user_password | password_hash('sha512') }}"
+      when: ( {{item.uid | string | first}}  == 1 ) and ( 'webserver' in group_names )   
+      loop: "{{users}}"
+    - name: create .ssh dir in web servers
+      file:
+        path: "/home/{{item.username}}/.ssh"
+        state: directory
+        owner: "{{item.username}}"
+        group: "{{item.username}}"
+        mode: 0700
+      when: ( {{item.uid | string | first}}  == 1 ) and ( 'webserver' in group_names )   
+      loop: "{{users}}"
+    - name: copy /home/vagrant/.ssh/id_rsa.pub
+      copy:
+        src: /home/vagrant/.ssh/id_rsa.pub
+        dest: "/home/{{item.username}}/.ssh/authorized_keys"  
+        owner: "{{item.username}}"
+        group: "{{item.username}}"
+        mode: 0600
+      when: ( {{item.uid | string | first}}  == 1 ) and ( 'webserver' in group_names )   
+      loop: "{{users}}"
+
+    - name: create users in proxy servers
+      user:
+        name: "{{item.username}}"
+        state: present
+        shell: /bin/bash
+        password: "{{ user_password | password_hash('sha512') }}"
+      when: ( {{item.uid | string | first}}  == 2 ) and ( 'proxy' in group_names )   
+      loop: "{{ users }}"
+    - name: create .ssh dir in web servers
+      file:
+        path: "/home/{{item.username}}/.ssh"
+        state: directory
+        owner: "{{item.username}}"
+        group: "{{item.username}}"
+        mode: 0700
+      when: ( {{item.uid | string | first}}  == 2 ) and ( 'proxy' in group_names )   
+      loop: "{{users}}"
+    - name: copy /home/vagrant/.ssh/id_rsa.pub
+      copy:
+        src: /home/vagrant/.ssh/id_rsa.pub
+        dest: "/home/{{item.username}}/.ssh/authorized_keys"  
+        owner: "{{item.username}}"
+        group: "{{item.username}}"
+        mode: 0600
+      when: ( {{item.uid | string | first}}  == 2 ) and ( 'proxy' in group_names )   
+      loop: "{{users}}"
