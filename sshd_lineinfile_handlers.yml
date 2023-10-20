@@ -1,0 +1,23 @@
+---
+- name: SSH
+  hosts: dev
+  become: True
+  tasks:
+    - name: sshd_config
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        line: "{{ item.line }}"
+        regexp: "{{ item.regexp }}"
+      loop: 
+        - { regexp: '^X11Forwarding', line: 'X11Forwarding no' }
+        - { regexp: '^MaxAuthTries', line: 'MaxAuthTries 4' }
+        - { regexp: '^Banner', line: 'Banner /etc/motd' }
+      notify: 
+        - sshd_restart
+
+  handlers:
+    - name: sshd_restart
+      service:
+        name: sshd
+        state: restarted
+  
