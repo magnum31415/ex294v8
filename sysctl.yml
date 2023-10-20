@@ -1,0 +1,18 @@
+---
+- name: sysctl
+  hosts: all
+  become: true
+  vars:
+    - mem: 100
+  tasks:
+    - name: change swappiness
+      sysctl:
+        name: vm.swappiness
+        value: 10
+        state: present
+      when: (ansible_memfree_mb >= mem)
+    - name: error not enough mem
+      debug:
+        msg: "Server mem is {{ansible_memfree_mb}}"
+      when: ( ansible_memfree_mb < mem )
+
