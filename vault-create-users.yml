@@ -1,0 +1,22 @@
+---
+- name: create users
+  hosts: all
+  become: yes
+  vars_files:
+    - vault-users.yml
+    - vault-secret.yml
+  tasks:
+  - debug: var=pw_developer
+  - name: create groups
+    group:
+      name: "{{item.job}}"
+      state: present
+    loop: "{{users}}"
+  - name: create PROXY user
+    user:
+      name: "{{item.name}}" 
+      password: "{{ pw_developer | password_hash('sha512')}}"
+      group: "{{item.job}}" 
+      state: present
+    loop: "{{users}}"
+    when: ( 'proxy' in group_names ) and ( item.job == 'developer' )
