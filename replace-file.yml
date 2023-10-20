@@ -1,0 +1,16 @@
+---
+- name: replace a file
+  hosts: all
+  tasks:
+    - name: webserver group
+      become: true
+      copy:
+        content: "Webserver"
+        dest: /etc/issue
+      when: ('webserver' in group_names)
+    - name: proxy group
+      become: yes 
+      copy:
+        content: "Proxy"
+        dest: /etc/issue
+      when: "'proxy' in group_names"
