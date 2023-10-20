@@ -1,0 +1,29 @@
+---
+- name: install pkgs
+  yum:
+    name: "{{pkgs}}"
+    state: latest
+- name: svcs started
+  service:
+    name: "{{item}}"
+    state: started
+    enabled: true 
+  loop: "{{svcs}}"
+- name: enable fw http/s
+  firewalld:
+    service: "{{item}}" 
+    permanent: true
+    state: enabled
+  loop: 
+    - http
+    - https
+- name: index.html
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    mode: 0644
+  notify:
+    - httpd-restart
+           
+
+# tasks file for custom-apache

@@ -1,0 +1,6 @@
+---
+- name: role custom apache
+  hosts: all
+  become: true
+  roles:
+    - custom-apache

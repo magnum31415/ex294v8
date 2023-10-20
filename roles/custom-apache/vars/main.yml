@@ -1,0 +1,11 @@
+---
+# vars file for custom-apache
+pkgs:
+ - httpd
+ - mod_ssl
+ - php
+ - firewalld
+svcs:
+ - httpd
+ - firewalld
+www-dir: /var/www/html
