@@ -1,0 +1,19 @@
+---
+- name: cront hourly
+  hosts: all
+  become: true
+  tasks:
+  - name: add cron task on proxy servers
+    cron:
+      name: log date
+      minute: "00"
+      hour: "*" 
+      day: "*"
+      month: "*"
+      weekday: "*"
+      job: date >> /var/log/time.log
+      cron_file: time-log
+      user: root
+      state: present
+    when: ( 'proxy' in group_names )
+
