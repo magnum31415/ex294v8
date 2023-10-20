@@ -1,0 +1,28 @@
+---
+- name: MOTD
+  hosts: all
+  become: True
+  tasks:
+  - name: delte file motd
+    file:
+      path: /etc/motd
+      state: absent
+ #- name: motd text2
+ #  lineinfile:
+ #    path: /etc/motd
+ #    line: "MY SERVER {{ansible_facts['hostname']}}" 
+  - name: motd text in PROXY
+    lineinfile:
+      path: /etc/motd
+      line: "MY PROXY SERVER {{ansible_facts['hostname']}}" 
+      state: present 
+      create: yes
+    when: "'proxy' in group_names"  
+  - name: motd text2
+    lineinfile:
+      path: /etc/motd
+      state: present
+      create: yes
+      line: "MY PROXY SERVER {{ansible_facts['hostname']}}" 
+    when: "'webserver' in group_names"  
+  
