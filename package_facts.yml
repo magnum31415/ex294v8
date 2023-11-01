@@ -1,0 +1,11 @@
+---
+- name: package facts
+  hosts: all
+  tasks:
+    - name: gather package facts
+      package_facts:
+      when: ( 'proxy' in group_names )
+    - name: print facts
+      debug:
+        var: ansible_facts.packages
+
