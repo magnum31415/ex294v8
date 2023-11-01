@@ -1,0 +1,6 @@
+---
+# ansible-galaxy role install -r requirements.yml -p roles
+- name: git
+  scm: git
+  src: https://github.com/geerlingguy/ansible-role-git
+  version: 3.0.0
