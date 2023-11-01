@@ -1,0 +1,18 @@
+---
+- name: custom facts
+  hosts: proxy
+  become: true
+  gather_facts: false
+  tasks:
+  - name: ensure dir exists
+    file:
+      path: /etc/ansible/facts.d
+      state: directory
+  - name: dump fact
+    copy:
+      content: "[application]\nname=haproxy\n"
+      dest: /etc/ansible/facts.d/environment.fact
+      mode: 0644
+#
+# To test: ansible proxy -m setup | grep ansible_local -A 3
+#
