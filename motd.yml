@@ -1,0 +1,14 @@
+---
+- name: setup motd
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+  - name: populate file
+    copy:
+      content: "{{ motd }}"
+      dest: /etc/motd
+      group: root
+      owner: root
+      mode: 0644
+
