@@ -1,0 +1,17 @@
+---
+- name: network system rol
+  hosts: all
+  become: true
+  serial: 1
+  vars:
+    network_connections:
+      - name: internal
+        autoconnect: true
+        state: up
+        type: ethernet
+        interface_name: eth0
+        ip:
+          address:
+            - 192.168.57.101/24
+  roles:
+    - rhel-system-roles.network
