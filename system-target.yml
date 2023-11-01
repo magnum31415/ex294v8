@@ -1,0 +1,14 @@
+---
+- name: system target
+  hosts: all
+  become: true
+  tasks:
+  - name: default target
+    file:
+      src: /usr/lib/systemd/system/multi-user.target
+      dest: /usr/lib/systemd/system/default.target     
+      state: link
+      owner: root
+      group: root
+
+  
