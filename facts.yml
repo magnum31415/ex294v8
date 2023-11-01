@@ -1,0 +1,11 @@
+---
+- name: print vars
+  hosts: webserver
+  tasks:
+    - name: debug
+      debug:
+        msg: >
+           ansible_facts['fqdn'] {{ansible_facts['fqdn']}}
+           ansible_facts.fqdn {{ansible_facts.fqdn}}
+           ansible_fqdn {{ansible_fqdn}}
+
