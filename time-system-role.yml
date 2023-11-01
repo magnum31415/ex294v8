@@ -1,0 +1,18 @@
+---
+- name: name
+  hosts: all
+  become: true
+  vars:
+    timesync_ntp_servers:
+      - hostname: 1.pl.pool.ntp.org
+        iburst: true            
+        pool: true
+      - hostname: 2.pl.pool.ntp.org
+        iburst: true            
+        pool: true
+  roles:
+    - rhel-system-roles.timesync
+  post_tasks:
+    - name: set timezone
+      timezone: 
+        name: Europe/Madrid
