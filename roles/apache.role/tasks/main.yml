@@ -1,0 +1,32 @@
+---
+- name: install pkgs
+  yum:
+    name:
+      - httpd
+      - firewalld
+    state: installed
+- name: svc up
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - httpd
+    - firewalld
+- name: fw
+  firewalld:
+    permanent: true
+    immediate: true
+    state: enabled
+    port: "{{ item }}"
+  loop:
+    - 80/tcp
+    - 443/tcp
+- name: indexr.html
+  copy:
+    content: "Welcome, you have conntected to {{ ansible_facts.fqdn }}"
+    dest: /var/www/html/index.html
+    
+
+
+# tasks file for apache.role
