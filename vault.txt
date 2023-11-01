@@ -1,0 +1,2 @@
+ansible-vault encrypt vault_database_users.yml --vault-id @./vault_database_users_password
+ansible-vault encrypt vault_regular_users.yml --vault-id users@./vault_regular_users_password
