@@ -1,0 +1,26 @@
+---
+#ansible-playbook users_create.yml --vault-id @vault_regular_users_password
+- name: create users
+  hosts: all
+  gather_facts: false
+  become: true
+  vars_files:
+    - users_list.yml
+    - vault_regular_users.yml
+  tasks:
+  - name: create users webserver
+    user:
+      name: "{{item.username}}"
+      uid: "{{item.uid}}"
+      password: "{{ user_password | password_hash('sha512','saltx') }}"
+    loop: "{{ users }}"
+    #when: ( item.uid | string | first == '2' ) and ( inventory_hostname in groups['webserver'] )
+    when: ( item.uid >= 2000 ) and ( item.uid < 3000 ) and ( 'webserver' in group_names )
+  - name: create users proxy
+    user:
+      name: "{{item.username}}"
+      uid: "{{item.uid}}"
+      password: "{{ user_password | password_hash('sha512','saltx') }}"
+    loop: "{{ users }}"
+    when: ( item.uid >= 3000 ) and ( item.uid < 4000 ) and ( 'proxy'  in group_names )
+
