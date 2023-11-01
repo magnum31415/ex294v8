@@ -1,0 +1,14 @@
+---
+- name: install packages
+  hosts: all
+  become: true
+  tasks:
+  - name: install common pkg
+    yum:
+      name: "{{ common_packages }}"
+      state: present
+  - name: install specific pkg
+    yum:
+      name: "{{ specific_packages }}"
+      state: present
+
