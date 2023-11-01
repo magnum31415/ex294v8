@@ -1,0 +1,17 @@
+---
+- name: add repository
+  hosts: webserver
+  become: true
+  gather_facts: false
+  tasks:
+  - name: import key
+    rpm_key:
+      key: https://repo.mysql.com/RPM-GPG-KEY-mysql
+  - name: yum repo
+    yum_repository:
+      baseurl: http://repo.mysql.com/yum/mysql-5.7-community/el/6/$basearch/
+      name: mysql57-community
+      description: MySQL 5.7 Community Server
+      enabled: yes
+      gpgcheck: yes
+      gpgkey: https://repo.mysql.com/RPM-GPG-KEY-mysql
