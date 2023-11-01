@@ -1,0 +1,10 @@
+---
+- name: print facts
+  hosts: all
+  tasks: 
+  - name: debug var
+    debug:
+      msg: |
+        "ansible_facts['default_ipv4']['address']: {{ ansible_facts['default_ipv4']['address'] }}                            "
+        "ansible_default_ipv4.address: {{ ansible_default_ipv4.address }}                                                                    "
+        "hostvars[inventory_hostname]['ansible_facts']['default_ipv4']['address']:  {{ hostvars[inventory_hostname]['ansible_facts']['default_ipv4']['address']}} "
